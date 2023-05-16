@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:benyiino_shop/controllers/HomeController.dart';
 import 'package:benyiino_shop/screens/Home/ShopList.dart';
 import 'package:benyiino_shop/screens/Home/StoreCart.dart';
@@ -5,7 +7,7 @@ import 'package:benyiino_shop/widgets/AppBar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-const cartBarHeight = 100.0;
+const cartBarHeight = 80.0;
 const _pannelTransition = Duration(milliseconds: 700);
 
 class HomeScreen extends StatefulWidget {
@@ -39,7 +41,13 @@ class _HomeScreenState extends State<HomeScreen> {
 
   double _getTopForBlackPanel(GroceryState state, Size size) {
     if (state == GroceryState.normal) {
-      return size.height - kToolbarHeight - cartBarHeight;
+      double sizeTop = size.height - kToolbarHeight - cartBarHeight;
+
+      try {
+        sizeTop -= (Platform.isAndroid ? kBottomNavigationBarHeight * 0.5 : 0);
+      } catch (_) {}
+
+      return sizeTop;
     } else if (state == GroceryState.cart) {
       return cartBarHeight / 2;
     }
@@ -51,12 +59,13 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
 
-    return AnimatedBuilder(
-      animation: _homeController,
-      builder: (context, _) {
-        return Scaffold(
-          backgroundColor: Colors.black,
-          body: Column(
+    return Scaffold(
+      backgroundColor: Colors.black,
+      appBar: AppBar(toolbarHeight: 0),
+      body: AnimatedBuilder(
+        animation: _homeController,
+        builder: (context, _) {
+          return Column(
             children: [
               const AppBarWidget(),
               Expanded(
@@ -107,7 +116,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             }
                           },
                           child: Container(
-                            color: Colors.black,
+                            color: Theme.of(context).cardColor.withOpacity(0.4),
                             child: Column(
                               children: [
                                 Row(
@@ -214,9 +223,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
             ],
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
 }

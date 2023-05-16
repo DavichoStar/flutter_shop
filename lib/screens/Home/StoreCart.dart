@@ -35,7 +35,10 @@ class StoreCart extends StatelessWidget {
                         return Container(
                           alignment: Alignment.center,
                           padding: EdgeInsets.symmetric(vertical: MediaQuery.of(context).size.height * 0.3),
-                          child: const Text('No hay productos en el carrito'),
+                          child: const Text(
+                            'No hay productos en el carrito',
+                            style: TextStyle(color: Colors.white),
+                          ),
                         );
                       }
 
@@ -51,28 +54,31 @@ class StoreCart extends StatelessWidget {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(cartProduct.product.name),
+                              Text(
+                                cartProduct.product.name,
+                                style: const TextStyle(color: Colors.white),
+                              ),
                               Text(
                                 '\$${cartProduct.product.price} x ${cartProduct.quantity} = \$${double.parse((cartProduct.product.price * cartProduct.quantity).toStringAsFixed(2))}',
-                                style: Theme.of(context).textTheme.bodySmall,
+                                style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Colors.white),
                               ),
                             ],
                           ),
                           const Spacer(),
                           IconButton(
-                            icon: const Icon(Icons.remove_circle_outline),
+                            icon: const Icon(Icons.remove_circle_outline, color: Colors.white),
                             onPressed: () {
                               _homeController.removeFromCart(cartProduct.product);
                             },
                           ),
                           IconButton(
-                            icon: const Icon(Icons.add_circle_outline),
+                            icon: const Icon(Icons.add_circle_outline, color: Colors.white),
                             onPressed: () {
                               _homeController.addToCart(cartProduct.product);
                             },
                           ),
                           IconButton(
-                            icon: const Icon(Icons.delete),
+                            icon: const Icon(Icons.delete, color: Colors.white),
                             onPressed: () {
                               _homeController.deleteFromCart(cartProduct);
                             },
@@ -94,6 +100,7 @@ class StoreCart extends StatelessWidget {
               const Text(
                 'Total',
                 style: TextStyle(
+                  color: Colors.white,
                   fontWeight: FontWeight.w600,
                   fontSize: 20,
                 ),
@@ -102,7 +109,10 @@ class StoreCart extends StatelessWidget {
               Expanded(
                 child: Text(
                   '\$${_homeController.totalPrice}',
-                  style: Theme.of(context).textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.bold),
+                  style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
                   textAlign: TextAlign.end,
                 ),
               ),

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
 class StaggeredDualView extends StatelessWidget {
@@ -19,17 +21,35 @@ class StaggeredDualView extends StatelessWidget {
   // Función para calcular el ancho de la pantalla para la cantidad de columnas que se quieren mostrar
   int _calculateWidth(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
-    double itemWidth = (width - spacing) / 2;
+    double itemWidth = width - spacing;
     int column = 1;
 
-    if (itemWidth > 650 * aspectRatio) {
-      column = 5;
-    } else if (itemWidth > 490 * aspectRatio) {
-      column = 4;
-    } else if (itemWidth > 340 * aspectRatio) {
-      column = 3;
-    } else if (itemWidth > 210 * aspectRatio) {
-      column = 2;
+    bool isMobile = false;
+
+    try {
+      isMobile = Platform.isAndroid || Platform.isIOS; //MediaQuery.of(context).size.width < 600;
+    } catch (_) {}
+
+    if (isMobile) {
+      if (itemWidth > 850) {
+        column = 6;
+      } else if (itemWidth > 490) {
+        column = 4;
+      } else if (itemWidth > 450) {
+        column = 3;
+      } else if (itemWidth > 260) {
+        column = 2;
+      }
+    } else {
+      if (itemWidth > 850) {
+        column = 6;
+      } else if (itemWidth > 490) {
+        column = 4;
+      } else if (itemWidth > 385) {
+        column = 3;
+      } else if (itemWidth > 260) {
+        column = 2;
+      }
     }
 
     return column;
